@@ -85,7 +85,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
                 <p>{caption}</p>
                 <div className="flex items-center justify-between mt-2">
                     <button onClick={toggleLike} disabled={!currentUser} className={`p-2 ${isLiked ? 'text-red-500' : 'text-gray-500'}`}>
-                        {isLiked ? '❤️' : '👍'} Like
+                        {isLiked ? '❤️' : ''} Like
                     </button>
                     {currentUser && currentUser.uid === userId && (
                         <button onClick={deletePost} className="p-2 text-red-600">
