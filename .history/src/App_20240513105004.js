@@ -5,7 +5,7 @@ import { PostsProvider } from './contexts/PostsContext';
 import Login from './Components/Auth/Login';
 import PrivateRoute from './Components/Common/PrivateRoute';
 import Home from './Home';
-
+import Post from ;
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
             <Route path="/" element={
               <PrivateRoute>
                 <Home/>
+                <Post/>
               </PrivateRoute>
             } />
             <Route path="*" element={<Navigate to="/" />} />

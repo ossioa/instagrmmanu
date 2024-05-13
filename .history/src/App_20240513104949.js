@@ -17,6 +17,7 @@ function App() {
             <Route path="/" element={
               <PrivateRoute>
                 <Home/>
+                <Post/>
               </PrivateRoute>
             } />
             <Route path="*" element={<Navigate to="/" />} />

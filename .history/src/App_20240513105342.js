@@ -5,7 +5,7 @@ import { PostsProvider } from './contexts/PostsContext';
 import Login from './Components/Auth/Login';
 import PrivateRoute from './Components/Common/PrivateRoute';
 import Home from './Home';
-
+import Post from './Components/Post/Post';
 
 function App() {
   return (

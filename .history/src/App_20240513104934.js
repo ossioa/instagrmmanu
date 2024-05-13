@@ -6,7 +6,6 @@ import Login from './Components/Auth/Login';
 import PrivateRoute from './Components/Common/PrivateRoute';
 import Home from './Home';
 
-
 function App() {
   return (
     <Router>
@@ -17,6 +16,7 @@ function App() {
             <Route path="/" element={
               <PrivateRoute>
                 <Home/>
+                <Post/
               </PrivateRoute>
             } />
             <Route path="*" element={<Navigate to="/" />} />

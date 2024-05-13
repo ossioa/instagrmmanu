@@ -44,7 +44,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
         const postRef = doc(db, "posts", id);
         try {
             await deleteDoc(postRef);
-            alert("Post deleted successfully."); 
+            alert("Post deleted successfully."); // Optionally, refresh the page or update state to reflect the change
         } catch (error) {
             console.error("Error deleting post: ", error);
             setError("Failed to delete post.");
