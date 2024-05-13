@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../config/firebase';
 import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
-import CommentList from '../Comments/CommentList';
+import CommentList from './ComCommentList';
 
 const Post = ({ id, photoURL, caption, likedBy, userId }) => {
     const [likes, setLikes] = useState(likedBy.length);

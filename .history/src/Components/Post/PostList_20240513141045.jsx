@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-//import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import Post from './Post';  // Importez le composant Post
 
 const PostList = () => {
@@ -35,7 +35,7 @@ const PostList = () => {
           photoURL={post.photoURL}
           caption={post.caption}
           likedBy={post.likedBy}
-          userId={post.userId}
+          userId={post.userId} // Assurez-vous d'ajouter userId pour la gestion des permissions
           timestamp={post.timestamp}
         />
       ))}

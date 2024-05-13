@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-//import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import Post from './Post';  // Importez le composant Post
 
 const PostList = () => {

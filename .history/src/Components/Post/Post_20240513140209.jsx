@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../config/firebase';
-import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
-import CommentList from '../Comments/CommentList';
+import CommentList from './CommentList';  // Assurez-vous que le chemin d'accès est correct
 
 const Post = ({ id, photoURL, caption, likedBy, userId }) => {
     const [likes, setLikes] = useState(likedBy.length);
     const [isLiked, setIsLiked] = useState(false);
     const { currentUser } = useAuth();
     const [error, setError] = useState('');
-    const [comment, setComment] = useState('');
 
     useEffect(() => {
         setIsLiked(likedBy.includes(currentUser?.uid));
@@ -53,31 +52,6 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
         }
     };
 
-    const handleCommentSubmit = async (e) => {
-        e.preventDefault();
-        if (!currentUser) {
-            setError("Please log in to comment.");
-            return;
-        }
-        if (comment.trim() === '') {
-            setError("Comment cannot be empty.");
-            return;
-        }
-        try {
-            const postRef = doc(db, "posts", id);
-            const commentData = {
-                text: comment,
-                userId: currentUser.uid,
-                timestamp: new Date(),
-            };
-            await addDoc(collection(postRef, "comments"), commentData);
-            setComment('');
-        } catch (error) {
-            console.error("Error adding comment: ", error);
-            setError("Failed to add comment.");
-        }
-    };
-
     return (
         <div className="border rounded-lg p-4 shadow-lg mb-4 bg-gray-100">
             <img src={photoURL} alt="Post" className="w-full h-auto" />
@@ -95,20 +69,8 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
                     <span>{likes} Likes</span>
                 </div>
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                <div>
-                    <form onSubmit={handleCommentSubmit} className="mt-2">
-                        <input
-                            type="text"
-                            placeholder="Add a comment..."
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            className="input input-bordered w-full"
-                        />
-                        <button type="submit" className="btn btn-sm mt-2">Comment</button>
-                    </form>
-                </div>
-                <CommentList postId={id} />
             </div>
+            <CommentList postId={id} /> {/* Ajoutez ici le composant pour afficher et gérer les commentaires */}
         </div>
     );
 };
