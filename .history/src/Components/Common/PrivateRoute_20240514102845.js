@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext'; // Make sure the path is correct
 
 const PrivateRoute = ({ children }) => {
-  const { currentUser, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
 
   // If the authentication state is still loading, you can return a loading indicator or null to wait
   if (isLoading) {
