@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import Comment from './Comment';
 
@@ -8,7 +8,7 @@ const CommentList = ({ postId }) => {
 
     useEffect(() => {
         const fetchComments = async () => {
-            const q = query(collection(db, "posts", postId, "comments"));
+            const q = query(collection(db, "posts", postId, "comments"), where("postId", "==", postId));
             const querySnapshot = await getDocs(q);
             const commentsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
@@ -27,7 +27,7 @@ const CommentList = ({ postId }) => {
                     <Comment key={comment.id} commentId={comment.id} text={comment.text} userId={comment.userId} postId={postId} />
                 ))
             ) : (
-                <p>No comments...</p>
+                <p>non comment</p>
             )}
         </div>
     );

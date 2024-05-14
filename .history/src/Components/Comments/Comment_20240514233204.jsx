@@ -23,7 +23,7 @@ const Comment = ({ commentId, text, userId, postId }) => {
         <div className="p-2 border-b border-gray-300 flex justify-between items-center">
             <p>{text}</p>
             {currentUser && currentUser.uid === userId && (
-                <button onClick={handleDelete} className=" hover:text-red-700 text-blue-600 p-2 rounded-full">
+                <button onClick={handleDelete} className=" hover:text-red-700 text-slate-100 p-2 rounded-full">
                     <AiOutlineDelete className="inline-block "/> 
                 </button>
             )}

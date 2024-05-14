@@ -1,10 +1,12 @@
+// Post.jsx
+
 import React, { useState } from 'react';
 import { db } from '../../config/firebase';
 import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
-import { FaComments } from 'react-icons/fa';
+import CommentList from '../Comments/CommentList';
 import AvatarDisplay from '../Profile/AvatarDisplay';
-import CommentPopup from '../Comments/CommentPopup'; 
+import CommentPopup from '../Comments/CommentPopup'; // Import du nouveau composant CommentPopup
 
 const Post = ({ id, photoURL, caption, likedBy, userId }) => {
     const [likes, setLikes] = useState(likedBy.length);
@@ -12,7 +14,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
     const { currentUser } = useAuth();
     const [error, setError] = useState('');
     const [comment, setComment] = useState('');
-    const [showComments, setShowComments] = useState(false); 
+    const [showComments, setShowComments] = useState(false); // État pour contrôler l'affichage du pop-up
 
     const toggleLike = async () => {
         if (!currentUser) {
@@ -107,8 +109,8 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
                         <button type="submit" className="btn btn-sm mt-2 shadow bg-blue-500 text-slate-100 hover:text-black font-bold">Comment</button>
                     </form>
                 </div>
-                <div className=" flex justify-end">
-                    <button onClick={() => setShowComments(true)} className="text-blue-500 cursor-pointer border-spacing-2 font-bold flex gap-2 items-center"><FaComments className="inline-block hover:text-yellow-500"/>View Comments</button>
+                <div className="mt-4">
+                    <button onClick={() => setShowComments(true)} className="text-blue-500 cursor-pointer">View Comments</button>
                     {showComments && <CommentPopup postId={id} setShowComments={setShowComments} />}
                 </div>
             </div>

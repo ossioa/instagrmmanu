@@ -2,7 +2,7 @@ import React from 'react';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { useAuth } from '../../contexts/AuthContext';
-import {AiOutlineDelete} from 'react-icons/ai';
+imp
 
 const Comment = ({ commentId, text, userId, postId }) => {
     const { currentUser } = useAuth();
@@ -20,10 +20,10 @@ const Comment = ({ commentId, text, userId, postId }) => {
     };
 
     return (
-        <div className="p-2 border-b border-gray-300 flex justify-between items-center">
+        <div className="p-2 border-b border-gray-300">
             <p>{text}</p>
             {currentUser && currentUser.uid === userId && (
-                <button onClick={handleDelete} className=" hover:text-red-700 text-blue-600 p-2 rounded-full">
+                <button onClick={handleDelete} className="bg-red-600 hover:text-red-700 text-slate-100">
                     <AiOutlineDelete className="inline-block "/> 
                 </button>
             )}

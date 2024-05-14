@@ -108,7 +108,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
                     </form>
                 </div>
                 <div className=" flex justify-end">
-                    <button onClick={() => setShowComments(true)} className="text-blue-500 cursor-pointer border-spacing-2 font-bold flex gap-2 items-center"><FaComments className="inline-block hover:text-yellow-500"/>View Comments</button>
+                    <button onClick={() => setShowComments(true)} className="text-blue-500 cursor-pointer border-spacing-2 font-bold flex gap-2 items-center"><FaComments className="inline-block hover:t"/>View Comments</button>
                     {showComments && <CommentPopup postId={id} setShowComments={setShowComments} />}
                 </div>
             </div>
