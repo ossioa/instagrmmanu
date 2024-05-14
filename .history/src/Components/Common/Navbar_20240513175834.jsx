@@ -26,7 +26,7 @@ const Navbar = () => {
         </button>
         <button
           onClick={() => setShowCreatePost(true)}
-          className='bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex flex-col items-center gap-y-2'
+          className='bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex flex'
         >
           Create Post
         </button>

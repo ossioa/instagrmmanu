@@ -3,8 +3,7 @@ import { db } from '../../config/firebase';
 import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
 import CommentList from '../Comments/CommentList';
-import AvatarDisplay from '../Profile/AvatarDisplay';
-
+import AvatarDisplay from '../../Profile/AvatarDisplay'; 
 
 const Post = ({ id, photoURL, caption, likedBy, userId }) => {
     const [likes, setLikes] = useState(likedBy.length);
@@ -107,7 +106,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
                             onChange={(e) => setComment(e.target.value)}
                             className="input input-bordered w-full"
                         />
-                        <button type="submit" className="btn btn-sm mt-2 shadow bg-blue-500 text-slate-100 hover:text-black font-bold ">Comment</button>
+                        <button type="submit" className="btn btn-sm mt-2">Comment</button>
                     </form>
                 </div>
                 <CommentList postId={id} />

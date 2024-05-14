@@ -107,7 +107,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId }) => {
                             onChange={(e) => setComment(e.target.value)}
                             className="input input-bordered w-full"
                         />
-                        <button type="submit" className="btn btn-sm mt-2 shadow bg-blue-500 text-slate-100 hover:text-black font-bold ">Comment</button>
+                        <button type="submit" className="btn btn-sm mt-2 shadow brorder-b ">Comment</button>
                     </form>
                 </div>
                 <CommentList postId={id} />
