@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { storage, db } from '../../config/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, updateDoc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { AiOutlineCloudUpload, AiOutlineCheckCircle } from 'react-icons/ai';
 
@@ -29,16 +29,7 @@ const AvatarUpload = () => {
       const snapshot = await uploadBytes(storageRef, file);
       const photoURL = await getDownloadURL(snapshot.ref);
       const userRef = doc(db, 'users', currentUser.uid);
-      const docSnap = await getDoc(userRef);
-
-      if (!docSnap.exists()) {
-        // Le document n'existe pas, vous pouvez le créer ici
-        await setDoc(userRef, { avatar: photoURL }, { merge: true });
-      } else {
-        // Le document existe, vous pouvez le mettre à jour
-        await updateDoc(userRef, { avatar: photoURL });
-      }
-
+      await updateDoc(userRef, { avatar: photoURL });
       setMessage('Avatar updated successfully.');
       setFile(null);
     } catch (error) {

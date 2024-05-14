@@ -28,7 +28,7 @@ const AvatarDisplay = ({ userId }) => {
   return (
     <div>
       {avatarUrl ? (
-        <img src={avatarUrl} alt="User Avatar" style={{ width: '50px', height: '50px', borderRadius: '100%' }} />
+        <img src={avatarUrl} alt="User Avatar" style={{ width: '60px', height: '60px', borderRadius: '0%' }} />
       ) : (
         <p>...</p>  
       )}
