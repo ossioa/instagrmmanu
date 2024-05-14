@@ -53,8 +53,8 @@ const CreatePost = () => {
         photoURL,
         caption,
         userId: currentUser.uid, 
-        userName: currentUser.displayName,  
-        userProfilePic: currentUser.photoURL, 
+        userName: currentUser.displayName,  // Assurez-vous que user.displayName est disponible
+        userProfilePic: currentUser.photoURL, // Assurez-vous que user.photoURL est disponible
         timestamp: serverTimestamp(),
         likes: 0,
         comments: 0,

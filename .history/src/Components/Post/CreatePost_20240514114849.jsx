@@ -38,29 +38,29 @@ const CreatePost = () => {
       setError("Please enter a caption for your post.");
       return;
     }
-    if (!currentUser) {
+    if (!user) {
       setError("No user logged in. Please log in to create a post.");
       return;
     }
 
     setError(''); // Clear previous errors
     try {
-      const fileRef = ref(storage, `${currentUser.uid}/posts/${Date.now()}_${file.name}`);
+      const fileRef = ref(storage, `${user.uid}/posts/${Date.now()}_${file.name}`);
       const snapshot = await uploadBytes(fileRef, file);
       const photoURL = await getDownloadURL(snapshot.ref);
 
       await addDoc(collection(db, 'posts'), {
         photoURL,
         caption,
-        userId: currentUser.uid, 
-        userName: currentUser.displayName,  
-        userProfilePic: currentUser.photoURL, 
+        userId: user.uid, 
+        userName: user.displayName,  // Assurez-vous que user.displayName est disponible
+        userProfilePic: user.photoURL, // Assurez-vous que user.photoURL est disponible
         timestamp: serverTimestamp(),
         likes: 0,
         comments: 0,
         likedBy: []
       });
-      navigate('/'); 
+      navigate('/'); // Navigate to home or feed page after successful post creation
     } catch (error) {
       console.error('Error creating post: ', error);
       setError(`Error creating post: ${error.message}`);

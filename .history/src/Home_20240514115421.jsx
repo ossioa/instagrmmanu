@@ -6,9 +6,10 @@ const Home = () => {
   return (
     <div>
       <div  className='min-h-screen bg-gradient-to-r from-green-400 via-yellow-500 to-blue-500 animate-gradient-x'>
-        <Navbar  />
+        <Navbar user={user} />
         <main className=" mx-auto w-[45%]  p-5">
-            <PostList />            
+            <PostList />  
+            {children}          
         </main>
       </div>
     </div>
