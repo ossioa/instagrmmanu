@@ -22,7 +22,7 @@ const Comment = ({ commentId, text, userId, postId }) => {
         <div className="p-2 border-b border-gray-300">
             <p>{text}</p>
             {currentUser && currentUser.uid === userId && (
-                <button onClick={handleDelete} className="bg-red-600 hover:text-red-700 text-slate-100">
+                <button onClick={handleDelete} className="-red-600 hover:text-red-700 text-slate-100">
                     Delete
                 </button>
             )}
