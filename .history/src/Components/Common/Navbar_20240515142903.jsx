@@ -22,7 +22,7 @@ const Navbar = () => {
         <div className='hidden md:flex justify-center flex-grow'>
           <Search />
         </div>
-        <div className='flex justify-between gap-x-4 items-center'>
+        <div className='hidden md:flex justify-between gap-x-4 items-center'>
           <button
             onClick={() => setShowAvatarUpload(true)}
             className='bg-blue- text-white  rounded-full transition duration-300'
