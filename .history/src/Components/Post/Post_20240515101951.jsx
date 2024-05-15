@@ -90,7 +90,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
                         {isLiked ? '❤️' : '👍'} Like
                     </button>
                     {currentUser && currentUser.uid === userId && (
-                        <button onClick={deletePost} className="p-2 text-red-600 animate-bounce ease-in-out duration-300 relative">
+                        <button onClick={deletePost} className="p-2 text-red-600 animate-pulse relative">
                             <span className="text-1xl text-red-600" title="Delete Post"> 
                                 <FaTrashAlt className="text-red-600" />
                              </span>
