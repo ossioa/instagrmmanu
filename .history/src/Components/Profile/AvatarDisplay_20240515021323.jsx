@@ -31,7 +31,7 @@ const AvatarDisplay = ({ userId }) => {
       {avatarUrl && avatarUrl !== 'path_to_default_avatar.jpg' ? (
         <img src={avatarUrl} alt="avatar"  style={{ width: '50px', height: '50px', borderRadius: '100%' }} />
       ) : (
-        <FiUser size="26px"  className='mb-4 shadow bg-blue-500 text-white p-0 rounded-full hover:bg-blue-600 transition duration-300' /> 
+        <FiUser size="26px"  className='mb-4 bg-blue-500 text-white p-0 rounded-full hover:bg-blue-600 transition duration-300' /> 
       )}
     </div>
   );

@@ -6,7 +6,7 @@ import { FaComments } from 'react-icons/fa';
 import AvatarDisplay from '../Profile/AvatarDisplay';
 import CommentPopup from '../Comments/CommentPopup'; 
 
-const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
+const Post = ({ id, photoURL, caption, likedBy, userId }) => {
     const [likes, setLikes] = useState(likedBy.length);
     const [isLiked, setIsLiked] = useState(false);
     const { currentUser } = useAuth();
@@ -80,10 +80,9 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
     return (
         <div className="border rounded-lg p-4 shadow-lg mb-4 bg-gray-100">
             <AvatarDisplay userId={userId} />
-            <img src={photoURL} alt="Post" className="w-full h-auto mt-3" />
-            <div className="py-2 ">
+            <img src={photoURL} alt="Post" className="w-full h-auto" />
+            <div className="py-2 mt-2">
                 <p>{caption}</p>
-                <p className="text-gray-500 text-sm mt-1">Posted at {timestamp.toDateString()} {timestamp.toLocaleTimeString()}</p>
                 <div className="flex items-center justify-between mt-2">
                     <button onClick={toggleLike} disabled={!currentUser} className={`p-2 ${isLiked ? 'text-red-500' : 'text-gray-500'}`}>
                         {isLiked ? '❤️' : '👍'} Like

@@ -4,13 +4,12 @@ import Search from './Search';
 import CreatePost from '../Post/CreatePost';
 import AvatarUpload from '../Profile/AvatarUpload'; 
 import Modal from '../../Modal/Modal';
-import AvatarDisplay from '../Profile/AvatarDisplay'; 
-import { useAuth } from '../../contexts/AuthContext'; 
+import { FiUser } from 'react-icons/fi'; 
+import {AvatarDisplay} from '../Profile/AvatarDisplay'
 
 const Navbar = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showAvatarUpload, setShowAvatarUpload] = useState(false); 
-  const { currentUser } = useAuth(); 
 
   return (
     <div className='flex justify-between items-center px-12 py-2 bg-gray-100 sticky top-0 z-20 shadow'>
@@ -18,13 +17,13 @@ const Navbar = () => {
         <img src='https://pngedits.com/public/uploads/preview/instagram-logo-png-image-download-11617068196c1gb8cm06w.png' alt='logo' className='w-28' />
       </div>
       <Search />
-      <div className='flex justify-between gap-x-4 items-center'>
+      <div className='flex justify-end gap-x-4'>
         <button
           onClick={() => setShowAvatarUpload(true)}
-          className='bg-blue- text-white  rounded-full transition duration-300'
+          className='text-white bg-blue-500 p-2 rounded-full hover:bg-blue-600 transition duration-300'
           title="Upload Avatar"
-        > 
-          {currentUser && <AvatarDisplay userId={currentUser.uid} />} 
+        >
+          <FiUser size="24px" /><AvatarDisplay />
         </button>
         <button
           onClick={() => setShowCreatePost(true)}

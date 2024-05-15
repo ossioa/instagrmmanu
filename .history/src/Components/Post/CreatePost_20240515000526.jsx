@@ -6,11 +6,11 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { FiUpload, FiSend } from 'react-icons/fi';
 
+
 const CreatePost = () => {
   const [caption, setCaption] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(''); 
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
@@ -30,8 +30,6 @@ const CreatePost = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError('');
-    setSuccess(''); 
     if (!file) {
       setError("Please select a file to upload.");
       return;
@@ -45,6 +43,7 @@ const CreatePost = () => {
       return;
     }
 
+    setError(''); 
     try {
       const fileRef = ref(storage, `${currentUser.uid}/posts/${Date.now()}_${file.name}`);
       const snapshot = await uploadBytes(fileRef, file);
@@ -61,10 +60,7 @@ const CreatePost = () => {
         comments: 0,
         likedBy: []
       });
-      navigate('/');
-      setSuccess('Post created successfully.'); 
-      setCaption(''); 
-      setFile(null); 
+      navigate('/'); 
     } catch (error) {
       console.error('Error creating post: ', error);
       setError(`Error creating post: ${error.message}`);
@@ -96,7 +92,6 @@ const CreatePost = () => {
           <FiSend />
           Post
         </button>
-        {success && <p className="text-green-500 text-center mt-2 font-bold">{success}</p>} {/* Affichez le message de succès en vert et en gras */}
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
       </form>
     </div>

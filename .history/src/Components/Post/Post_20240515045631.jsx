@@ -83,7 +83,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
             <img src={photoURL} alt="Post" className="w-full h-auto mt-3" />
             <div className="py-2 ">
                 <p>{caption}</p>
-                <p className="text-gray-500 text-sm mt-1">Posted at {timestamp.toDateString()} {timestamp.toLocaleTimeString()}</p>
+                <p className="text-gray-500 text-sm mt-1">Posted by {userId} at {timestamp.toDateString()} {timestamp.toLocaleTimeString()}</p>
                 <div className="flex items-center justify-between mt-2">
                     <button onClick={toggleLike} disabled={!currentUser} className={`p-2 ${isLiked ? 'text-red-500' : 'text-gray-500'}`}>
                         {isLiked ? '❤️' : '👍'} Like

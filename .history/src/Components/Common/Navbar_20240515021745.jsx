@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className='flex justify-between gap-x-4 items-center'>
         <button
           onClick={() => setShowAvatarUpload(true)}
-          className='bg-blue- text-white  rounded-full transition duration-300'
+          className='bg-blue-500 text-white shadow rounded-full hover:bg-blue-600 transition duration-300'
           title="Upload Avatar"
         > 
           {currentUser && <AvatarDisplay userId={currentUser.uid} />} 

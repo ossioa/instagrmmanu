@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../config/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { FiUser } from 'react-icons/fi'; 
+import { FiUser } from 'react-icons/fi'; // Importez l'icône FiUser
 
 const AvatarDisplay = ({ userId }) => {
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -13,12 +13,12 @@ const AvatarDisplay = ({ userId }) => {
         if (userData && userData.avatar) {
           setAvatarUrl(userData.avatar);
         } else {
-          
+          // Set a default avatar if none is found
           setAvatarUrl('path_to_default_avatar.jpg');
         }
       }, error => {
         console.log("Failed to fetch avatar:", error);
-        
+        // Optionally handle the error, e.g., set a default avatar
         setAvatarUrl('path_to_default_avatar.jpg');
       });
 
@@ -27,11 +27,11 @@ const AvatarDisplay = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div >
+    <div>
       {avatarUrl && avatarUrl !== 'path_to_default_avatar.jpg' ? (
-        <img src={avatarUrl} alt="avatar"  style={{ width: '50px', height: '50px', borderRadius: '100%' }} />
+        <img src={avatarUrl} alt="..." style={{ width: '50px', height: '50px', borderRadius: '100%' }} />
       ) : (
-        <FiUser size="26px"  className='mb-4 shadow bg-blue-500 text-white p-0 rounded-full hover:bg-blue-600 transition duration-300' /> 
+        <FiUser size="" /> // Utilisez l'icône FiUser comme avatar par défaut
       )}
     </div>
   );

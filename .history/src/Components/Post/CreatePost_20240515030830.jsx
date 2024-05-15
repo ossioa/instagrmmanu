@@ -10,7 +10,7 @@ const CreatePost = () => {
   const [caption, setCaption] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(''); 
+  const [success, setSuccess] = useState(''); // Ajoutez cet état pour le message de succès
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 

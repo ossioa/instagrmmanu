@@ -10,7 +10,7 @@ const CreatePost = () => {
   const [caption, setCaption] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(''); 
+  const [success, setSuccess] = useState(''); // Ajoutez cet état pour le message de succès
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
@@ -31,7 +31,7 @@ const CreatePost = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
-    setSuccess(''); 
+    setSuccess(''); // Réinitialisez le message de succès lorsque le formulaire est soumis
     if (!file) {
       setError("Please select a file to upload.");
       return;
@@ -62,9 +62,9 @@ const CreatePost = () => {
         likedBy: []
       });
       navigate('/');
-      setSuccess('Post created successfully.'); 
-      setCaption(''); 
-      setFile(null); 
+      setSuccess('Post created successfully.'); // Définissez le message de succès lorsque la création du post a réussi
+      setCaption(''); // Videz le champ de légende
+      setFile(null); // Videz le fichier sélectionné
     } catch (error) {
       console.error('Error creating post: ', error);
       setError(`Error creating post: ${error.message}`);
