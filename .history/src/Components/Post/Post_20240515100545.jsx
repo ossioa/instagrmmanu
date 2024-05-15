@@ -91,7 +91,7 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
                     </button>
                     {currentUser && currentUser.uid === userId && (
                         <button onClick={deletePost} className="p-2 text-red-600">
-                            <FaTrashAlt className=" text-1xl" />
+                            <FaTrashAlt className="" />
                         </button>
                     )}
                     <span>{likes} Likes</span>
