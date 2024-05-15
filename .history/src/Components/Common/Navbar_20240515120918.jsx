@@ -18,8 +18,6 @@ const Navbar = () => {
       <nav className={`flex justify-between items-center px-4 py-2 bg-gray-100 sticky top-0 z-20 shadow sm:px-8 md:px-12 ${isOpen ? 'hidden md:flex' : ''}`}>
         <div className='flex items-center space-x-4 sm:space-x-8 md:space-x-12'>
           <img src='https://pngedits.com/public/uploads/preview/instagram-logo-png-image-download-11617068196c1gb8cm06w.png' alt='logo' className='w-28' />
-        </div>
-        <div className='hidden md:flex justify-center flex-grow'>
           <Search />
         </div>
         <div className='hidden md:flex justify-between gap-x-4 items-center'>
