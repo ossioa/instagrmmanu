@@ -46,7 +46,7 @@ const Navbar = () => {
         </div>
         <div className='md:hidden'>
           <button onClick={() => setIsOpen(!isOpen)}>
-            <svg viewBox="0 0 20 20" fill="currentColor" className="menu w-12 h-12">
+            <svg viewBox="0 0 20 20" fill="currentColor" className="menu w-6 h-6">
               <path fillRule="evenodd" d="M2 5a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zm0 6a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zm1 5a1 1 0 100 2h14a1 1 0 100-2H3z" clipRule="evenodd" />
             </svg>
           </button>
@@ -56,7 +56,7 @@ const Navbar = () => {
         <div className='flex justify-between items-center w-full px-4 py-2 bg-gray-100 sticky top-0 z-20 shadow md:hidden'>
           <button
             onClick={() => setShowAvatarUpload(true)}
-            className='bg-blue- text-white  rounded-full transition duration-300'
+            className='bg-blue- text-white  rounded-full transition duration-300 w-16 h-16 md:w-24 md:h-24'
             title="Upload Avatar"
           > 
             {currentUser && <AvatarDisplay userId={currentUser.uid} />} 
@@ -66,7 +66,7 @@ const Navbar = () => {
           </Modal>
           <button
             onClick={() => setShowCreatePost(true)}
-            className='bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex flex-col items-center gap-y-2'
+            className='bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex flex-col items-center gap-y-2 w-16 h-16 md:w-24 md:h-24'
           >
             Create Post
           </button>
