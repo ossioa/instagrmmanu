@@ -33,7 +33,7 @@ const SignOut = () => {
       disabled={loading}  
       >
         {loading ? 'Signing Out...' : <><FontAwesomeIcon icon={faSignOutAlt} /> Sign Out</>}
-      </button>
+</button>
 
     </div>
   );

@@ -4,7 +4,7 @@ import { auth } from '../../config/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { AiOutlineMail, AiOutlineLock, AiOutlineGoogle, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FiLogIn, FiUserPlus } from 'react-icons/fi';
-import { faUser, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faPencilAlt, } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
@@ -88,8 +88,17 @@ const Login = () => {
           {isLogin ? 'Google Sign-in': 'Google Sign-up'}
         </button>
         <button type="button" onClick={() => setIsLogin(!isLogin)} className="mt-4 text-blue-600 hover:text-blue-700">
-          {isLogin ? 'No account? Register here' : 'Already an account? Log in here'}
+          {isLogin ? 
+            <>
+              <FontAwesomeIcon icon={faUserPlus} /> No account? Register here
+            </> 
+            : 
+            <>
+              <FontAwesomeIcon icon={faSignInAlt} /> Already an account? Log in here
+            </>
+          }
         </button>
+
       </form>
     </div>
   );

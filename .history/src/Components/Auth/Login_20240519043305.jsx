@@ -4,8 +4,6 @@ import { auth } from '../../config/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { AiOutlineMail, AiOutlineLock, AiOutlineGoogle, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FiLogIn, FiUserPlus } from 'react-icons/fi';
-import { faUser, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 const Login = () => {
@@ -42,18 +40,7 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-200" >
       <form onSubmit={handleAuth} className="flex flex-col p-6 space-y-4 bg-white shadow-lg rounded-xl max-w-md w-full">
-      <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
-  {isLogin ? 
-    <>
-      <FontAwesomeIcon icon={faUser} /> LOG IN
-    </> 
-    : 
-    <>
-      <FontAwesomeIcon icon={faPencilAlt} /> REGISTER
-    </>
-  }
-</h2>
-
+        <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">{isLogin ? 'Connectez-vous' : "Inscrivez-vous"}</h2>
         <div className="relative">
           <AiOutlineMail className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
@@ -79,16 +66,16 @@ const Login = () => {
             {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
           </div>
         </div>
-        <button type="submit" className="btn btn-primary w-full flex items-center justify-center gap-2 font-bold">
-          {isLogin ? <FiLogIn className='text-xl' /> : <FiUserPlus className='text-xl' /> }
-          {isLogin ? 'Sign-in': 'Sign-up'}
+        <button type="submit" className="btn btn-primary w-full flex items-center justify-center gap-2">
+          {isLogin ? <FiLogIn /> : <FiUserPlus />}
+          {isLogin ? 'Connexion' : 'Inscription'}
         </button>
-        <button type="button" onClick={googleSignIn} className="btn btn-secondary w-full flex items-center justify-center gap-2 font-bold">
-          <AiOutlineGoogle className='text-xl' />
-          {isLogin ? 'Google Sign-in': 'Google Sign-up'}
+        <button type="button" onClick={googleSignIn} className="btn btn-secondary w-full flex items-center justify-center gap-2">
+          <AiOutlineGoogle />
+          {isLogin ? 'Google Connexion' : 'Google Inscription'}
         </button>
         <button type="button" onClick={() => setIsLogin(!isLogin)} className="mt-4 text-blue-600 hover:text-blue-700">
-          {isLogin ? 'No account? Register here' : 'Already an account? Log in here'}
+          {isLogin ? 'Pas de compte ? Inscrivez-vous ici' : 'Déjà un compte ? Connectez-vous ici'}
         </button>
       </form>
     </div>

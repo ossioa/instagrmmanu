@@ -79,12 +79,12 @@ const Login = () => {
             {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
           </div>
         </div>
-        <button type="submit" className="btn btn-primary w-full flex items-center justify-center gap-2 font-bold">
-          {isLogin ? <FiLogIn className='text-xl' /> : <FiUserPlus className='text-xl' /> }
+        <button type="submit" className="btn btn-primary w-full flex items-center justify-center gap-2">
+          {isLogin ? <FiLogIn className='text-2xl' /> : <FiUserPlus />}
           {isLogin ? 'Sign-in': 'Sign-up'}
         </button>
-        <button type="button" onClick={googleSignIn} className="btn btn-secondary w-full flex items-center justify-center gap-2 font-bold">
-          <AiOutlineGoogle className='text-xl' />
+        <button type="button" onClick={googleSignIn} className="btn btn-secondary w-full flex items-center justify-center gap-2">
+          <AiOutlineGoogle />
           {isLogin ? 'Google Sign-in': 'Google Sign-up'}
         </button>
         <button type="button" onClick={() => setIsLogin(!isLogin)} className="mt-4 text-blue-600 hover:text-blue-700">

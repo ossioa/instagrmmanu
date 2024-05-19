@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase';
 import { signOut } from 'firebase/auth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-
 
 const SignOut = () => {
   const navigate = useNavigate();
@@ -26,15 +23,14 @@ const SignOut = () => {
 
   return (
     <div>
-      {error && <p className="text-red-600 font-bold">{error}</p>}
+      {error && <p className="text-red-600 fo">{error}</p>}
       <button 
-      onClick={handleSignOut} 
-      className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-      disabled={loading}  
+        onClick={handleSignOut} 
+        className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        disabled={loading}  
       >
-        {loading ? 'Signing Out...' : <><FontAwesomeIcon icon={faSignOutAlt} /> Sign Out</>}
+        {loading ? 'Signing Out...' : 'Sign Out'}
       </button>
-
     </div>
   );
 };

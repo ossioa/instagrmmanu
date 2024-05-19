@@ -88,8 +88,17 @@ const Login = () => {
           {isLogin ? 'Google Sign-in': 'Google Sign-up'}
         </button>
         <button type="button" onClick={() => setIsLogin(!isLogin)} className="mt-4 text-blue-600 hover:text-blue-700">
-          {isLogin ? 'No account? Register here' : 'Already an account? Log in here'}
-        </button>
+      {isLogin ? 
+        <>
+          <FontAwesomeIcon icon={faUserPlus} /> No account? Register here
+        </> 
+        : 
+        <>
+          <FontAwesomeIcon icon={faSignInAlt} /> Already an account? Log in here
+        </>
+      }
+</button>
+
       </form>
     </div>
   );

@@ -31,9 +31,9 @@ const SignOut = () => {
       onClick={handleSignOut} 
       className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
       disabled={loading}  
-      >
-        {loading ? 'Signing Out...' : <><FontAwesomeIcon icon={faSignOutAlt} /> Sign Out</>}
-      </button>
+    >
+  {loading ? 'Signing Out...' : <><FontAwesomeIcon icon={faSignOutAlt} /> Sign Out</>}
+</button>
 
     </div>
   );
