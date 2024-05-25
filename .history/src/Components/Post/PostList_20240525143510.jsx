@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-import Post from './Post'; 
+import Post from './Post';  // Importez le composant Post
 
 const PostList = () => {
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'posts'), (snapshot) => {
-      const postsData = snapshot.docs.map(doc => {
+    const fetchPosts = async () => {
+      const querySnapshot = await getDocs(collection(db, "posts"));
+      const postsData = querySnapshot.docs.map(doc => {
         const data = doc.data();
         return {
           id: doc.id,
@@ -18,15 +19,15 @@ const PostList = () => {
           comments: data.comments || []  
         };
       });
-      setFilteredPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  // Initialiser les posts filtrés avec tous les posts
-    });
+      setPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  // Trier les posts par date décroissante
+    };
 
-    return () => unsubscribe();
+    fetchPosts();
   }, []);
 
   return (
     <div>
-      {filteredPosts.map(post => (
+      {posts.map(post => (
         <Post
           key={post.id}
           id={post.id}

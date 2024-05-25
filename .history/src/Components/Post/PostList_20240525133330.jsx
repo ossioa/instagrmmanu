@@ -4,6 +4,7 @@ import { db } from '../../config/firebase';
 import Post from './Post'; 
 
 const PostList = () => {
+  const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
@@ -18,11 +19,20 @@ const PostList = () => {
           comments: data.comments || []  
         };
       });
+      setPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  
       setFilteredPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  // Initialiser les posts filtrés avec tous les posts
     });
 
     return () => unsubscribe();
   }, []);
+
+  // Fonction de gestion de la recherche
+  const handleSearch = (searchValue) => {
+    const filtered = posts.filter(post =>
+      post.caption.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredPosts(filtered);
+  };
 
   return (
     <div>

@@ -3,7 +3,8 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import Post from './Post'; 
 
-const PostList = () => {
+const PostList = ({ searchTerm }) => {
+  const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
@@ -18,11 +19,19 @@ const PostList = () => {
           comments: data.comments || []  
         };
       });
-      setFilteredPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  // Initialiser les posts filtrés avec tous les posts
+      setPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));
     });
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const filtered = posts.filter(post => {
+      if (!post.caption) return false; // Vérifiez si la légende est définie
+      return post.caption.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    setFilteredPosts(filtered);
+  }, [searchTerm, posts]);
 
   return (
     <div>

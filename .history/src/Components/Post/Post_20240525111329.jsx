@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../config/firebase';
-import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection,  onSnapshot } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { FaComments } from 'react-icons/fa';
 import AvatarDisplay from '../Profile/AvatarDisplay';
@@ -14,20 +14,14 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
     const [error, setError] = useState('');
     const [comment, setComment] = useState('');
     const [showComments, setShowComments] = useState(false); 
-    const [commentsCount, setCommentsCount] = useState(0); 
-
-    useEffect(() => {
-        if (currentUser) {
-            setIsLiked(likedBy.includes(currentUser.uid));
-        }
-    }, [currentUser, likedBy]);
+    const [commentsCount, setCommentsCount] = useState(0);  // New state for comments count
 
     useEffect(() => {
         const postRef = doc(db, "posts", id);
         const commentsRef = collection(postRef, "comments");
 
         const unsubscribe = onSnapshot(commentsRef, (snapshot) => {
-            setCommentsCount(snapshot.size); 
+            setCommentsCount(snapshot.size);  // Set comments count
         });
 
         return () => unsubscribe();
@@ -131,7 +125,8 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
                 </div>
                 <div className="flex justify-end">
                     <button onClick={() => setShowComments(true)} className="text-blue-500 cursor-pointer border-spacing-2 font-bold flex gap-2 items-center">
-                    {commentsCount} View Comments <FaComments className="inline-block text-blue-900"/> 
+                        <FaComments className="inline-block hover:text-yellow-500"/> 
+                        {commentsCount} Comments
                     </button>
                     {showComments && <CommentPopup postId={id} setShowComments={setShowComments} />}
                 </div>

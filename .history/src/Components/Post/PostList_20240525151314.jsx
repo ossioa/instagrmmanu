@@ -3,7 +3,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import Post from './Post'; 
 
-const PostList = () => {
+const PostList = ({ searchQuery }) => {
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
@@ -18,15 +18,19 @@ const PostList = () => {
           comments: data.comments || []  
         };
       });
-      setFilteredPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  // Initialiser les posts filtrés avec tous les posts
+      setFilteredPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));
     });
 
     return () => unsubscribe();
   }, []);
 
+  const filtered = filteredPosts.filter(post =>
+    post.caption && post.caption.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
-      {filteredPosts.map(post => (
+      {filtered.map(post => (
         <Post
           key={post.id}
           id={post.id}

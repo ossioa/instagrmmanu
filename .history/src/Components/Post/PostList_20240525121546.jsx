@@ -4,9 +4,10 @@ import { db } from '../../config/firebase';
 import Post from './Post'; 
 
 const PostList = () => {
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    // Fonction de nettoyage pour supprimer l'écouteur lorsque le composant est démonté
     const unsubscribe = onSnapshot(collection(db, 'posts'), (snapshot) => {
       const postsData = snapshot.docs.map(doc => {
         const data = doc.data();
@@ -18,15 +19,16 @@ const PostList = () => {
           comments: data.comments || []  
         };
       });
-      setFilteredPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  // Initialiser les posts filtrés avec tous les posts
+      setPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  // Trier les posts par date décroissante
     });
 
+    // Retourne la fonction de nettoyage pour démonter l'écouteur
     return () => unsubscribe();
   }, []);
 
   return (
     <div>
-      {filteredPosts.map(post => (
+      {posts.map(post => (
         <Post
           key={post.id}
           id={post.id}

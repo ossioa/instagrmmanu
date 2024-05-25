@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { storage, db } from '../../config/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { addDoc, collection, serverTimestamp, runTransaction } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { FiUpload, FiSend } from 'react-icons/fi';
-import imageCompression from 'browser-image-compression';
 
 const CreatePost = () => {
   const [caption, setCaption] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // Nouvel état pour le chargement
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
@@ -34,63 +33,49 @@ const CreatePost = () => {
     event.preventDefault();
     setError('');
     setSuccess('');
-    setLoading(true);
+    setLoading(true); // Début du chargement
 
     if (!file) {
       setError("Please select a file to upload.");
-      setLoading(false);
+      setLoading(false); // Fin du chargement
       return;
     }
     if (!caption) {
       setError("Please enter a caption for your post.");
-      setLoading(false);
+      setLoading(false); // Fin du chargement
       return;
     }
     if (!currentUser) {
       setError("No user logged in. Please log in to create a post.");
-      setLoading(false);
+      setLoading(false); // Fin du chargement
       return;
     }
 
     try {
-      // Compress the image
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1024,
-        useWebWorker: true,
-      };
-      const compressedFile = await imageCompression(file, options);
-
-      const fileRef = ref(storage, `${currentUser.uid}/posts/${Date.now()}_${compressedFile.name}`);
-      const snapshot = await uploadBytes(fileRef, compressedFile);
+      const fileRef = ref(storage, `${currentUser.uid}/posts/${Date.now()}_${file.name}`);
+      const snapshot = await uploadBytes(fileRef, file);
       const photoURL = await getDownloadURL(snapshot.ref);
 
-      // Use transaction to ensure post creation
-      await runTransaction(db, async (transaction) => {
-        const newPostRef = collection(db, 'posts');
-        await addDoc(newPostRef, {
-          photoURL,
-          caption,
-          userId: currentUser.uid,
-          userName: currentUser.displayName,
-          userProfilePic: currentUser.photoURL,
-          timestamp: serverTimestamp(),
-          likes: 0,
-          comments: 0,
-          likedBy: []
-        });
+      await addDoc(collection(db, 'posts'), {
+        photoURL,
+        caption,
+        userId: currentUser.uid,
+        userName: currentUser.displayName,
+        userProfilePic: currentUser.photoURL,
+        timestamp: serverTimestamp(),
+        likes: 0,
+        comments: 0,
+        likedBy: []
       });
-
       setSuccess('Post created successfully.');
       setCaption('');
       setFile(null);
       navigate('/');
-
     } catch (error) {
       console.error('Error creating post: ', error);
       setError(`Error creating post: ${error.message}`);
     }
-    setLoading(false);
+    setLoading(false); // Fin du chargement
   };
 
   return (
@@ -114,10 +99,10 @@ const CreatePost = () => {
         <button
           type="submit"
           className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex justify-center items-center gap-2"
-          disabled={loading}
+          disabled={loading} // Désactiver le bouton pendant le chargement
         >
           <FiSend />
-          {loading ? 'Posting...' : 'Post'}
+          {loading ? 'Posting...' : 'Post'} 
         </button>
         {success && <p className="text-green-500 text-center mt-2 font-bold">{success}</p>}
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}

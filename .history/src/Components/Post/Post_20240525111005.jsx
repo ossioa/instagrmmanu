@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { db } from '../../config/firebase';
-import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { FaComments } from 'react-icons/fa';
 import AvatarDisplay from '../Profile/AvatarDisplay';
@@ -14,24 +14,6 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
     const [error, setError] = useState('');
     const [comment, setComment] = useState('');
     const [showComments, setShowComments] = useState(false); 
-    const [commentsCount, setCommentsCount] = useState(0); 
-
-    useEffect(() => {
-        if (currentUser) {
-            setIsLiked(likedBy.includes(currentUser.uid));
-        }
-    }, [currentUser, likedBy]);
-
-    useEffect(() => {
-        const postRef = doc(db, "posts", id);
-        const commentsRef = collection(postRef, "comments");
-
-        const unsubscribe = onSnapshot(commentsRef, (snapshot) => {
-            setCommentsCount(snapshot.size); 
-        });
-
-        return () => unsubscribe();
-    }, [id]);
 
     const toggleLike = async () => {
         if (!currentUser) {
@@ -129,10 +111,8 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
                         <button type="submit" className="btn btn-sm mt-2 shadow bg-blue-500 text-slate-100 hover:text-black font-bold">Comment</button>
                     </form>
                 </div>
-                <div className="flex justify-end">
-                    <button onClick={() => setShowComments(true)} className="text-blue-500 cursor-pointer border-spacing-2 font-bold flex gap-2 items-center">
-                    {commentsCount} View Comments <FaComments className="inline-block text-blue-900"/> 
-                    </button>
+                <div className=" flex justify-end">
+                    <button onClick={() => setShowComments(true)} className="text-blue-500 cursor-pointer border-spacing-2 font-bold flex gap-2 items-center"><FaComments className="inline-block hover:text-yellow-500"/>View Comments</button>
                     {showComments && <CommentPopup postId={id} setShowComments={setShowComments} />}
                 </div>
             </div>

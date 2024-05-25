@@ -14,20 +14,14 @@ const Post = ({ id, photoURL, caption, likedBy, userId, timestamp }) => {
     const [error, setError] = useState('');
     const [comment, setComment] = useState('');
     const [showComments, setShowComments] = useState(false); 
-    const [commentsCount, setCommentsCount] = useState(0); 
-
-    useEffect(() => {
-        if (currentUser) {
-            setIsLiked(likedBy.includes(currentUser.uid));
-        }
-    }, [currentUser, likedBy]);
+    const [commentsCount, setCommentsCount] = useState(0);  // New state for comments count
 
     useEffect(() => {
         const postRef = doc(db, "posts", id);
         const commentsRef = collection(postRef, "comments");
 
         const unsubscribe = onSnapshot(commentsRef, (snapshot) => {
-            setCommentsCount(snapshot.size); 
+            setCommentsCount(snapshot.size);  // Set comments count
         });
 
         return () => unsubscribe();
