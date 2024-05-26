@@ -6,7 +6,7 @@ import AvatarUpload from '../Profile/AvatarUpload';
 import Modal from '../../Modal/Modal';
 import AvatarDisplay from '../Profile/AvatarDisplay'; 
 import { useAuth } from '../../contexts/AuthContext'; 
-import PostList from '../Post/PostList';
+//import PostList from '../Post/PostList';
 
 const Navbar = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
@@ -22,7 +22,7 @@ const Navbar = () => {
           <img src='https://pngedits.com/public/uploads/preview/instagram-logo-png-image-download-11617068196c1gb8cm06w.png' alt='logo' className='w-28' />
         </div>
         <div className='hidden md:flex justify-center flex-grow'>
-          <Search onSearch={setSearchTerm} searchTerm={searchTerm}/>
+          <Search onSearch={setSearchTerm} />
         </div>
         <div className='flex justify-between gap-x-4 items-center'>
           <button
@@ -78,9 +78,7 @@ const Navbar = () => {
           <SignOut/>
         </div>
       )}
-      <div className="mx-auto sm:w-full md:w-[60%] lg:w-[45%] p-5">
-          <PostList searchTerm={searchTerm} />
-      </div>
+      //<PostList searchTerm={searchTerm} />
     </>
   );
 }

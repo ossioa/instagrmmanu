@@ -9,7 +9,7 @@ const Search = ({ onSearch }) => {
   };
 
   return (
-    <div className="flex items-center justify-center relative">
+    <div className="flex items-center justify-center ">
       <form onSubmit={handleSearch}>
         <input
           className="border-2 border-cyan-200 bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none"

@@ -79,7 +79,7 @@ const Navbar = () => {
         </div>
       )}
       <div className="mx-auto sm:w-full md:w-[60%] lg:w-[45%] p-5">
-          <PostList searchTerm={searchTerm} />
+      <div className="flex justify-between items-center mb-5">
       </div>
     </>
   );

@@ -6,7 +6,7 @@ import AvatarUpload from '../Profile/AvatarUpload';
 import Modal from '../../Modal/Modal';
 import AvatarDisplay from '../Profile/AvatarDisplay'; 
 import { useAuth } from '../../contexts/AuthContext'; 
-import PostList from '../Post/PostList';
+//import PostList from '../Post/PostList';
 
 const Navbar = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
@@ -78,9 +78,7 @@ const Navbar = () => {
           <SignOut/>
         </div>
       )}
-      <div className="mx-auto sm:w-full md:w-[60%] lg:w-[45%] p-5">
-          <PostList searchTerm={searchTerm} />
-      </div>
+      
     </>
   );
 }

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../config/firebase';
-import Post from './Post';
+import Post from './Post'; 
+import Search from './Sear
 
-const PostList = ({ searchTerm }) => {
+const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
@@ -15,31 +16,28 @@ const PostList = ({ searchTerm }) => {
           id: doc.id,
           ...data,
           timestamp: data.timestamp ? data.timestamp.toDate() : new Date(),
-          likedBy: data.likedBy || [],
-          comments: data.comments || []
+          likedBy: data.likedBy || [],  
+          comments: data.comments || []  
         };
       });
-      setPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));
-      setFilteredPosts(postsData); // Initialiser les posts filtrés avec tous les posts
+      setPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  
+      setFilteredPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));  // Initialiser les posts filtrés avec tous les posts
     });
 
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (searchTerm) {
-      const lowercasedFilter = searchTerm.toLowerCase();
-      const filteredData = posts.filter(item =>
-        item.caption.toLowerCase().includes(lowercasedFilter)
-      );
-      setFilteredPosts(filteredData);
-    } else {
-      setFilteredPosts(posts);
-    }
-  }, [searchTerm, posts]);
+  // Fonction de gestion de la recherche
+  const handleSearch = (searchValue) => {
+    const filtered = posts.filter(post =>
+      post.caption.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredPosts(filtered);
+  };
 
   return (
     <div>
+      <Search handleSearch={handleSearch} />
       {filteredPosts.map(post => (
         <Post
           key={post.id}
