@@ -4,8 +4,7 @@ import { MdUpdate } from 'react-icons/md';
 import { db } from '../../config/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
-import './loader.css';
-
+import Spinner from '../layout/Spinner';
 
 
 
@@ -20,7 +19,7 @@ const EditProfile = () => {
     const { currentUser } = useAuth();
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');

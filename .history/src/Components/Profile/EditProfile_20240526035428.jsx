@@ -114,7 +114,8 @@ const EditProfile = () => {
                     {updating ? 'Updating...' : 'Update Profile'}
                 </button>
                 {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-                {success && <p className="text-green-500 text-center mt-2">{success}</p>}
+                {success && <p style={{ color: 'green', fontWeight: 'bold' }} className="text-center mt-2">{success}</p>}
+
             </form>
         </div>
     );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from 'firebase/auth';
-import { AiOutlineMail, AiOutlineLock, AiOutlineGoogle, AiOutlineEye, AiOutlineEyeInvisible, AiOutlineKey } from 'react-icons/ai';
+import { AiOutlineMail, AiOutlineLock, AiOutlineGoogle, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { FiLogIn, FiUserPlus } from 'react-icons/fi';
 import { faUser, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,11 +57,7 @@ const Login = () => {
         <div className="flex justify-center items-center min-h-screen bg-gray-200">
             <form onSubmit={forgotPassword ? handlePasswordReset : handleAuth} className="flex flex-col p-6 space-y-4 bg-white shadow-lg rounded-xl max-w-md w-full">
                 <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
-                    {forgotPassword ? (
-                        <>
-                            <AiOutlineKey className="mr-2"/> Reset Password
-                        </>
-                    ) : isLogin ? (
+                    {forgotPassword ? 'Reset Password' : isLogin ? (
                         <>
                             <FontAwesomeIcon icon={faUser} /> LOG IN
                         </>
@@ -102,19 +98,8 @@ const Login = () => {
                 )}
 
                 <button type="submit" className="btn btn-primary w-full flex items-center justify-center gap-2 font-bold">
-                    {forgotPassword ? (
-                        <>
-                            <AiOutlineKey className="text-xl" /> Send Reset Link
-                        </>
-                    ) : isLogin ? (
-                        <>
-                            <FiLogIn className="text-xl" /> Sign-in
-                        </>
-                    ) : (
-                        <>
-                            <FiUserPlus className="text-xl" /> Sign-up
-                        </>
-                    )}
+                    {forgotPassword ? 'Reset Password' : isLogin ? <FiLogIn className="text-xl" /> : <FiUserPlus className="text-xl" />}
+                    {forgotPassword ? 'Send Reset Link' : isLogin ? 'Sign-in' : 'Sign-up'}
                 </button>
 
                 {!forgotPassword && (

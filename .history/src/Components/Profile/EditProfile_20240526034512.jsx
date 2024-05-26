@@ -20,7 +20,7 @@ const EditProfile = () => {
     const { currentUser } = useAuth();
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(fal);
     const [updating, setUpdating] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');

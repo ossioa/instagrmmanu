@@ -1,83 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FaUserEdit, FaBiohazard } from 'react-icons/fa';
 import { MdUpdate } from 'react-icons/md';
-import { db } from '../../config/firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { useAuth } from '../../contexts/AuthContext';
-import './loader.css';
-
-
-
-
-// Spinner Component
-const Spinner = () => (
-    <div className="flex justify-center items-center">
-        <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-    </div>
-);
+import useUserProfile from '../../hooks/useUserProfile';
 
 const EditProfile = () => {
-    const { currentUser } = useAuth();
-    const [username, setUsername] = useState('');
-    const [bio, setBio] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [updating, setUpdating] = useState(false);
-    const [error, setError] = useState('');
+    const { profile, loading, error, updateUserProfile } = useUserProfile();
+    const [username, setUsername] = useState(profile.username);
+    const [bio, setBio] = useState(profile.bio);
     const [success, setSuccess] = useState('');
-
-    useEffect(() => {
-        if (currentUser) {
-            const fetchUserProfile = async () => {
-                try {
-                    const docRef = doc(db, "users", currentUser.uid);
-                    const docSnap = await getDoc(docRef);
-                    if (docSnap.exists()) {
-                        setUsername(docSnap.data().username);
-                        setBio(docSnap.data().bio);
-                    } else {
-                        setError("No such document!");
-                    }
-                } catch (error) {
-                    setError("Error fetching user profile: " + error.message);
-                } finally {
-                    setLoading(false);
-                }
-            };
-            fetchUserProfile();
-        } else {
-            setLoading(false);
-        }
-    }, [currentUser]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSuccess('');
         setError('');
-
         if (!username || !bio) {
             setError("Please fill all the fields.");
             return;
         }
-
-        if (!currentUser) {
-            setError("Please log in to update your profile.");
-            return;
-        }
-
-        setUpdating(true);
         try {
-            const userRef = doc(db, "users", currentUser.uid);
-            await updateDoc(userRef, { username, bio });
-            setSuccess("Profile updated successfully.");
+            const successMessage = await updateUserProfile(username, bio);
+            setSuccess(successMessage);
         } catch (error) {
-            setError("Failed to update profile: " + error.message);
-        } finally {
-            setUpdating(false);
+            setError(error.message);
         }
     };
 
     if (loading) {
-        return <Spinner />;
+        return <div>Loading...</div>;
     }
 
     return (
@@ -108,10 +57,10 @@ const EditProfile = () => {
                 <button
                     className="w-full flex justify-center items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
                     type="submit"
-                    disabled={updating}
+                    disabled={loading}
                 >
                     <MdUpdate className="mr-2"/>
-                    {updating ? 'Updating...' : 'Update Profile'}
+                    {loading ? 'Updating...' : 'Update Profile'}
                 </button>
                 {error && <p className="text-red-500 text-center mt-2">{error}</p>}
                 {success && <p className="text-green-500 text-center mt-2">{success}</p>}
