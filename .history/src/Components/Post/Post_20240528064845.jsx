@@ -8,13 +8,6 @@ import CommentPopup from '../Comments/CommentPopup';
 import { FaTrashAlt } from 'react-icons/fa';
 
 const reactionTypes = ['like', 'love', 'laugh', 'sad', 'angry'];
-const reactionEmojis = {
-    like: '👍',
-    love: '❤️',
-    laugh: '😂',
-    sad: '😢',
-    angry: '😡'
-};
 
 const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
     const { currentUser } = useAuth();
@@ -113,16 +106,6 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
         }
     };
 
-    const getReactionSummary = () => {
-        const summary = [];
-        for (const [reaction, users] of Object.entries(reactions)) {
-            if (users.length > 0) {
-                summary.push(`${reactionEmojis[reaction]} ${users.length}`);
-            }
-        }
-        return summary.join(' ');
-    };
-
     return (
         <div className="border rounded-lg p-4 shadow-lg mb-4 bg-gray-100">
             <AvatarDisplay userId={userId} />
@@ -137,7 +120,7 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                             disabled={!currentUser}
                             className={`p-2 ${currentReaction ? 'text-red-500' : 'text-gray-500'}`}
                         >
-                            {currentReaction ? reactionEmojis[currentReaction] : '👍'} Like 
+                            👍 React
                         </button>
                         {showReactions && (
                             <div className="flex">
@@ -148,7 +131,12 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                                         disabled={!currentUser}
                                         className={`p-2 ${currentReaction === reaction ? 'text-red-500' : 'text-gray-500'}`}
                                     >
-                                        {reactionEmojis[reaction]} {reaction.charAt(0).toUpperCase() + reaction.slice(1)}
+                                        {reaction === 'like' && '👍'}
+                                        {reaction === 'love' && '❤️'}
+                                        {reaction === 'laugh' && '😂'}
+                                        {reaction === 'sad' && '😢'}
+                                        {reaction === 'angry' && '😡'}
+                                        {reaction.charAt(0).toUpperCase() + reaction.slice(1)}
                                     </button>
                                 ))}
                             </div>
@@ -161,7 +149,7 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                              </span>
                         </button>
                     )}
-                    <span>{getReactionSummary()} {Object.values(reactions).flat().length} Like(s)</span>
+                    <span>{Object.values(reactions).flat().length} Reactions</span>
                 </div>
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 <div>

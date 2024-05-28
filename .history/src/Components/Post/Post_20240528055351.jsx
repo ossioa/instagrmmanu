@@ -1,38 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../config/firebase';
-import { doc, updateDoc, arrayUnion, arrayRemove, deleteDoc, addDoc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, deleteDoc, addDoc, collection, onSnapshot } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
-import { FaComments } from 'react-icons/fa';
+import { FaComments, FaTrashAlt } from 'react-icons/fa';
 import AvatarDisplay from '../Profile/AvatarDisplay';
-import CommentPopup from '../Comments/CommentPopup'; 
-import { FaTrashAlt } from 'react-icons/fa';
+import CommentPopup from '../Comments/CommentPopup';
 
-const reactionTypes = ['like', 'love', 'laugh', 'sad', 'angry'];
-const reactionEmojis = {
-    like: '👍',
-    love: '❤️',
-    laugh: '😂',
-    sad: '😢',
-    angry: '😡'
-};
+const reactionTypes = ['like', 'love', 'laugh', 'wow', 'sad', 'angry'];
 
 const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
+    const [userReactions, setUserReactions] = useState({});
     const { currentUser } = useAuth();
-    const [currentReaction, setCurrentReaction] = useState(null);
-    const [commentsCount, setCommentsCount] = useState(0); 
     const [error, setError] = useState('');
     const [comment, setComment] = useState('');
     const [showComments, setShowComments] = useState(false); 
-    const [showReactions, setShowReactions] = useState(false);
+    const [commentsCount, setCommentsCount] = useState(0); 
 
     useEffect(() => {
         if (currentUser) {
-            for (const [reaction, users] of Object.entries(reactions)) {
-                if (users.includes(currentUser.uid)) {
-                    setCurrentReaction(reaction);
-                    break;
-                }
-            }
+            const userReacts = reactionTypes.reduce((acc, type) => {
+                acc[type] = reactions[type]?.includes(currentUser.uid);
+                return acc;
+            }, {});
+            setUserReactions(userReacts);
         }
     }, [currentUser, reactions]);
 
@@ -47,25 +37,23 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
         return () => unsubscribe();
     }, [id]);
 
-    const handleReaction = async (reaction) => {
+    const toggleReaction = async (type) => {
         if (!currentUser) {
             setError("You must be logged in to react to posts.");
             return;
         }
 
         const postRef = doc(db, "posts", id);
-        
         try {
-            if (currentReaction === reaction) {
-                await updateDoc(postRef, { [`reactions.${reaction}`]: arrayRemove(currentUser.uid) });
-                setCurrentReaction(null);
+            const updatedReactions = { ...reactions };
+            if (userReactions[type]) {
+                updatedReactions[type] = updatedReactions[type].filter(uid => uid !== currentUser.uid);
             } else {
-                if (currentReaction) {
-                    await updateDoc(postRef, { [`reactions.${currentReaction}`]: arrayRemove(currentUser.uid) });
-                }
-                await updateDoc(postRef, { [`reactions.${reaction}`]: arrayUnion(currentUser.uid) });
-                setCurrentReaction(reaction);
+                updatedReactions[type] = (updatedReactions[type] || []).concat(currentUser.uid);
             }
+
+            await updateDoc(postRef, { reactions: updatedReactions });
+            setUserReactions(prev => ({ ...prev, [type]: !prev[type] }));
         } catch (error) {
             console.error("Error updating reaction: ", error);
             setError("Failed to update reaction.");
@@ -113,15 +101,7 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
         }
     };
 
-    const getReactionSummary = () => {
-        const summary = [];
-        for (const [reaction, users] of Object.entries(reactions)) {
-            if (users.length > 0) {
-                summary.push(`${reactionEmojis[reaction]} ${users.length}`);
-            }
-        }
-        return summary.join(' ');
-    };
+    const totalReactions = reactionTypes.reduce((total, type) => total + (reactions[type]?.length || 0), 0);
 
     return (
         <div className="border rounded-lg p-4 shadow-lg mb-4 bg-gray-100">
@@ -131,37 +111,31 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                 <p>{caption}</p>
                 <p className="text-gray-500 text-sm mt-1">Posted at {timestamp.toDateString()} {timestamp.toLocaleTimeString()}</p>
                 <div className="flex items-center justify-between mt-2">
-                    <div>
-                        <button
-                            onClick={() => setShowReactions(!showReactions)}
-                            disabled={!currentUser}
-                            className={`p-2 ${currentReaction ? 'text-red-500' : 'text-gray-500'}`}
-                        >
-                            {currentReaction ? reactionEmojis[currentReaction] : '👍'} Like 
-                        </button>
-                        {showReactions && (
-                            <div className="flex">
-                                {reactionTypes.map(reaction => (
-                                    <button
-                                        key={reaction}
-                                        onClick={() => handleReaction(reaction)}
-                                        disabled={!currentUser}
-                                        className={`p-2 ${currentReaction === reaction ? 'text-red-500' : 'text-gray-500'}`}
-                                    >
-                                        {reactionEmojis[reaction]} {reaction.charAt(0).toUpperCase() + reaction.slice(1)}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                    <div className="flex gap-2">
+                        {reactionTypes.map(type => (
+                            <button
+                                key={type}
+                                onClick={() => toggleReaction(type)}
+                                disabled={!currentUser}
+                                className={`p-2 ${userReactions[type] ? 'text-blue-500' : 'text-gray-500'}`}
+                            >
+                                {type === 'like' && '👍'}
+                                {type === 'love' && '❤️'}
+                                {type === 'laugh' && '😂'}
+                                {type === 'wow' && '😮'}
+                                {type === 'sad' && '😢'}
+                                {type === 'angry' && '😡'}
+                            </button>
+                        ))}
                     </div>
                     {currentUser && currentUser.uid === userId && (
                         <button onClick={deletePost} className="p-2 text-red-600 animate-bounce ease-in-out duration-300 relative">
                             <span className="text-1xl text-red-600" title="Delete Post"> 
                                 <FaTrashAlt className="text-red-600" />
-                             </span>
+                            </span>
                         </button>
                     )}
-                    <span>{getReactionSummary()} {Object.values(reactions).flat().length} Like(s)</span>
+                    <span>{totalReactions} Reactions</span>
                 </div>
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 <div>

@@ -15,7 +15,7 @@ const PostList = ({ searchTerm }) => {
           id: doc.id,
           ...data,
           timestamp: data.timestamp ? data.timestamp.toDate() : new Date(),
-          reactions: data.reactions || {}
+          likedBy: data.likedBy || []
         };
       });
       setPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));
@@ -45,7 +45,7 @@ const PostList = ({ searchTerm }) => {
           id={post.id}
           photoURL={post.photoURL}
           caption={post.caption}
-          reactions={post.reactions}
+          likedBy={post.likedBy}
           userId={post.userId}
           timestamp={post.timestamp}
         />

@@ -137,7 +137,7 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                             disabled={!currentUser}
                             className={`p-2 ${currentReaction ? 'text-red-500' : 'text-gray-500'}`}
                         >
-                            {currentReaction ? reactionEmojis[currentReaction] : '👍'} Like 
+                            {currentReaction ? reactionEmojis[currentReaction] : '👍'} Like
                         </button>
                         {showReactions && (
                             <div className="flex">
@@ -161,7 +161,7 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                              </span>
                         </button>
                     )}
-                    <span>{getReactionSummary()} {Object.values(reactions).flat().length} Like(s)</span>
+                    <span>{getReactionSummary()} {Object.values(reactions).flat().length} Reactions</span>
                 </div>
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 <div>

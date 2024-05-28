@@ -8,7 +8,7 @@ import CommentPopup from '../Comments/CommentPopup';
 import { FaTrashAlt } from 'react-icons/fa';
 
 const reactionTypes = ['like', 'love', 'laugh', 'sad', 'angry'];
-const reactionEmojis = {
+const reactionIcons = {
     like: '👍',
     love: '❤️',
     laugh: '😂',
@@ -19,11 +19,11 @@ const reactionEmojis = {
 const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
     const { currentUser } = useAuth();
     const [currentReaction, setCurrentReaction] = useState(null);
+    const [showReactionOptions, setShowReactionOptions] = useState(false);
     const [commentsCount, setCommentsCount] = useState(0); 
     const [error, setError] = useState('');
     const [comment, setComment] = useState('');
     const [showComments, setShowComments] = useState(false); 
-    const [showReactions, setShowReactions] = useState(false);
 
     useEffect(() => {
         if (currentUser) {
@@ -66,6 +66,7 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                 await updateDoc(postRef, { [`reactions.${reaction}`]: arrayUnion(currentUser.uid) });
                 setCurrentReaction(reaction);
             }
+            setShowReactionOptions(false); // Hide reaction options after selection
         } catch (error) {
             console.error("Error updating reaction: ", error);
             setError("Failed to update reaction.");
@@ -113,16 +114,6 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
         }
     };
 
-    const getReactionSummary = () => {
-        const summary = [];
-        for (const [reaction, users] of Object.entries(reactions)) {
-            if (users.length > 0) {
-                summary.push(`${reactionEmojis[reaction]} ${users.length}`);
-            }
-        }
-        return summary.join(' ');
-    };
-
     return (
         <div className="border rounded-lg p-4 shadow-lg mb-4 bg-gray-100">
             <AvatarDisplay userId={userId} />
@@ -131,37 +122,34 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                 <p>{caption}</p>
                 <p className="text-gray-500 text-sm mt-1">Posted at {timestamp.toDateString()} {timestamp.toLocaleTimeString()}</p>
                 <div className="flex items-center justify-between mt-2">
-                    <div>
+                    {showReactionOptions ? (
+                        reactionTypes.map(reaction => (
+                            <button
+                                key={reaction}
+                                onClick={() => handleReaction(reaction)}
+                                disabled={!currentUser}
+                                className={`p-2 ${currentReaction === reaction ? 'text-red-500' : 'text-gray-500'}`}
+                            >
+                                {reactionIcons[reaction]} {reaction.charAt(0).toUpperCase() + reaction.slice(1)}
+                            </button>
+                        ))
+                    ) : (
                         <button
-                            onClick={() => setShowReactions(!showReactions)}
+                            onClick={() => setShowReactionOptions(true)}
                             disabled={!currentUser}
-                            className={`p-2 ${currentReaction ? 'text-red-500' : 'text-gray-500'}`}
+                            className="p-2 text-gray-500"
                         >
-                            {currentReaction ? reactionEmojis[currentReaction] : '👍'} Like 
+                            {currentReaction ? reactionIcons[currentReaction] : '👍'} React
                         </button>
-                        {showReactions && (
-                            <div className="flex">
-                                {reactionTypes.map(reaction => (
-                                    <button
-                                        key={reaction}
-                                        onClick={() => handleReaction(reaction)}
-                                        disabled={!currentUser}
-                                        className={`p-2 ${currentReaction === reaction ? 'text-red-500' : 'text-gray-500'}`}
-                                    >
-                                        {reactionEmojis[reaction]} {reaction.charAt(0).toUpperCase() + reaction.slice(1)}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                    )}
                     {currentUser && currentUser.uid === userId && (
                         <button onClick={deletePost} className="p-2 text-red-600 animate-bounce ease-in-out duration-300 relative">
                             <span className="text-1xl text-red-600" title="Delete Post"> 
                                 <FaTrashAlt className="text-red-600" />
-                             </span>
+                            </span>
                         </button>
                     )}
-                    <span>{getReactionSummary()} {Object.values(reactions).flat().length} Like(s)</span>
+                    <span>{Object.values(reactions).flat().length} Reactions</span>
                 </div>
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 <div>
@@ -178,7 +166,7 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                 </div>
                 <div className="flex justify-end">
                     <button onClick={() => setShowComments(true)} className="text-blue-500 cursor-pointer border-spacing-2 font-bold flex gap-2 items-center">
-                        {commentsCount} View Comments <FaComments className="inline-block text-blue-900"/> 
+                    {commentsCount} View Comments <FaComments className="inline-block text-blue-900"/> 
                     </button>
                     {showComments && <CommentPopup postId={id} setShowComments={setShowComments} />}
                 </div>

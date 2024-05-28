@@ -161,7 +161,7 @@ const Post = ({ id, photoURL, caption, reactions, userId, timestamp }) => {
                              </span>
                         </button>
                     )}
-                    <span>{getReactionSummary()} {Object.values(reactions).flat().length} Like(s)</span>
+                    <span>{getReactionSummary()} {Object.values(reactions).flat().length} Like(s</span>
                 </div>
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 <div>
