@@ -43,17 +43,17 @@ const Home = () => {
   };
 
   return (
-    <div className='min-h-screen bg-gradient-to-r from-green-400 via-yellow-500 to-blue-500 animate-gradient-x'>
+    <div className='bg-gray-200'>
       <Navbar onSearch={setSearchTerm} />
       <main className="relative mx-auto sm:w-full md:w-[60%] lg:w-[40%] p-5 flex gap-5">
         <div className="flex-1">
           {renderContent()}
         </div>
-        <div className="fixed right-0 top-20 flex justify-bween items-center gap-5 font-bold text-green-600 mr-10 ml-0">
-          <button onClick={handleHomeClick} className="btn mx-5 font-bold text-green-600 flex items-center">
+        <div className="fixed right-0 top-20 flex justify-bween items-center gap-5 font-bold text-black mr-10 ml-0">
+          <button onClick={handleHomeClick} className="btn mx-5 font-bold text-black flex items-center">
             <FaHome className="mr-2" /> Home
           </button>
-          <button onClick={handleGroupClick} className="btn font-bold text-green-600 flex items-center">
+          <button onClick={handleGroupClick} className="btn font-bold text-black flex items-center">
             <FaUsers className="mr-2" /> Groups
           </button>
         </div>

@@ -13,10 +13,16 @@ const CreateGroupPost = ({ groupId }) => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
+  // Réinitialise les messages de succès et d'erreur
+  const resetFeedback = () => {
     setError('');
     setSuccess('');
+  };
+
+  // Fonction de création du post
+  const handleCreatePost = async (e) => {
+    e.preventDefault();
+    resetFeedback();
 
     if (!caption) {
       setError('Caption cannot be empty');
@@ -27,40 +33,57 @@ const CreateGroupPost = ({ groupId }) => {
     if (image) {
       setLoading(true);
       try {
-        const imageRef = ref(storage, `groupPosts/${groupId}/${Date.now()}_${image.name}`);
-        await uploadBytes(imageRef, image);
-        imageUrl = await getDownloadURL(imageRef);
+        imageUrl = await uploadImage();
         setSuccess('Image uploaded successfully');
       } catch (error) {
-        console.error('Error uploading image: ', error);
         setError('Failed to upload image.');
+        console.error('Error uploading image: ', error);
         setLoading(false);
         return;
       }
-      setLoading(false);
     }
 
     try {
-      const groupRef = doc(db, 'groups', groupId);
-      await addDoc(collection(groupRef, 'posts'), {
-        caption: caption,
-        photoURL: imageUrl,
-        userId: currentUser.uid,
-        timestamp: new Date(),
-        reactions: {},
-        comments: []
-      });
-      setCaption('');
-      setImage(null);
+      await savePostToFirestore(imageUrl);
+      resetForm();
       setSuccess('Post created successfully');
     } catch (error) {
-      console.error('Error creating post: ', error);
       setError('Failed to create post.');
+      console.error('Error creating post: ', error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Fonction d'upload d'image
+  const uploadImage = async () => {
+    const imageRef = ref(storage, `groupPosts/${groupId}/${Date.now()}_${image.name}`);
+    await uploadBytes(imageRef, image);
+    return await getDownloadURL(imageRef);
+  };
+
+  // Fonction pour sauvegarder le post dans Firestore
+  const savePostToFirestore = async (imageUrl) => {
+    const groupRef = doc(db, 'groups', groupId);
+    await addDoc(collection(groupRef, 'posts'), {
+      caption,
+      photoURL: imageUrl,
+      userId: currentUser.uid,
+      timestamp: new Date(),
+      reactions: {},
+      comments: []
+    });
+  };
+
+  // Réinitialise le formulaire après la création du post
+  const resetForm = () => {
+    setCaption('');
+    setImage(null);
   };
 
   return (
     <form onSubmit={handleCreatePost} className="border rounded-lg p-4 shadow-lg mb-4 bg-gray-100">
+      {/* Champ de légende */}
       <input
         type="text"
         value={caption}
@@ -68,6 +91,8 @@ const CreateGroupPost = ({ groupId }) => {
         placeholder="What's on your mind?"
         className="input input-bordered w-full mb-2"
       />
+
+      {/* Champ de téléchargement d'image */}
       <label className="input input-bordered w-full mb-2 flex items-center justify-between">
         <span>Upload Image</span>
         <input
@@ -77,7 +102,9 @@ const CreateGroupPost = ({ groupId }) => {
         />
         <FaUpload className="ml-2" />
       </label>
-      <button type="submit" className="btn btn-sm mt-2 shadow bg-blue-500 text-white hover:text-black font-bold flex items-center">
+
+      {/* Bouton de soumission du post */}
+      <button type="submit" className="btn btn-sm mt-2 shadow bg-blue-500 text-white hover:text-black font-bold flex items-center" disabled={loading}>
         {loading ? (
           <FaSpinner className="animate-spin mr-2" />
         ) : (
@@ -86,6 +113,8 @@ const CreateGroupPost = ({ groupId }) => {
           </>
         )}
       </button>
+
+      {/* Messages d'erreur et de succès */}
       {error && <p className="text-red-500 font-bold text-sm mt-2">{error}</p>}
       {success && <p className="text-green-500 font-bold text-sm mt-2">{success}</p>}
     </form>

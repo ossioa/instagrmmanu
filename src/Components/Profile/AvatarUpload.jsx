@@ -8,37 +8,48 @@ import { AiOutlineCloudUpload, AiOutlineCheckCircle } from 'react-icons/ai';
 const AvatarUpload = () => {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState('');
-  const { currentUser } = useAuth(); 
+  const { currentUser } = useAuth();
 
-  const handleUploadStart = (event) => {
-    setFile(event.target.files[0]);
+  // Fonction de gestion de la sélection de fichier
+  const handleFileSelection = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
   };
 
-  const handleUploadSuccess = async () => {
+  // Fonction de gestion de l'upload
+  const handleFileUpload = async () => {
+    // Vérification de la sélection d'un fichier
     if (!file) {
       setMessage('Please select an image.');
       return;
     }
+
+    // Vérification que l'utilisateur est connecté
     if (!currentUser) {
       setMessage('You must be logged in to update your avatar.');
       return;
     }
 
-    const storageRef = ref(storage, `users/${currentUser.uid}/avatar`);
-    try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const photoURL = await getDownloadURL(snapshot.ref);
-      const userRef = doc(db, 'users', currentUser.uid);
-      const docSnap = await getDoc(userRef);
+    // Référence dans le stockage Firebase
+    const avatarRef = ref(storage, `users/${currentUser.uid}/avatar`);
 
-      if (!docSnap.exists()) {
-        // Le document n'existe pas, vous pouvez le créer ici
-        await setDoc(userRef, { avatar: photoURL }, { merge: true });
+    try {
+      // Upload du fichier vers Firebase Storage
+      const snapshot = await uploadBytes(avatarRef, file);
+      const avatarURL = await getDownloadURL(snapshot.ref);
+
+      // Référence du document utilisateur dans Firestore
+      const userDocRef = doc(db, 'users', currentUser.uid);
+      const docSnapshot = await getDoc(userDocRef);
+
+      // Création ou mise à jour du document utilisateur
+      if (docSnapshot.exists()) {
+        await updateDoc(userDocRef, { avatar: avatarURL });
       } else {
-        // Le document existe, vous pouvez le mettre à jour
-        await updateDoc(userRef, { avatar: photoURL });
+        await setDoc(userDocRef, { avatar: avatarURL }, { merge: true });
       }
 
+      // Message de succès et réinitialisation du fichier sélectionné
       setMessage('Avatar updated successfully.');
       setFile(null);
     } catch (error) {
@@ -53,8 +64,16 @@ const AvatarUpload = () => {
         <AiOutlineCloudUpload className='text-3xl' />
         <span className='ml-2'>Choose Avatar</span>
       </label>
-      <input id="avatar-upload" type="file" onChange={handleUploadStart} className='hidden' />
-      <button onClick={handleUploadSuccess} className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 flex items-center'>
+      <input 
+        id="avatar-upload" 
+        type="file" 
+        onChange={handleFileSelection} 
+        className='hidden' 
+      />
+      <button 
+        onClick={handleFileUpload} 
+        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 flex items-center'
+      >
         <AiOutlineCheckCircle className='text-xl' />
         <span className='ml-2'>Update Avatar</span>
       </button>

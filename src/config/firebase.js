@@ -4,14 +4,16 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import { setPersistence, browserSessionPersistence } from 'firebase/auth';
 
-//Firebase configuration
+
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCRk86K_x3uTYvSoD7edeMJFlYN4vrIYAg",
-  authDomain: "instagramclone241.firebaseapp.com",
-  projectId: "instagramclone241",
-  storageBucket: "instagramclone241.appspot.com",
-  messagingSenderId: "567921808959",
-  appId: "1:567921808959:web:6ca2bafa2d16ce1749ca8a"
+  apiKey: "AIzaSyA_UFKFtOHhrPd9EmADSzwpbuVLyXl4Z3s",
+  authDomain: "instagrammanu.firebaseapp.com",
+  databaseURL: "https://instagrammanu-default-rtdb.firebaseio.com",
+  projectId: "instagrammanu",
+  storageBucket: "instagrammanu.appspot.com",
+  messagingSenderId: "381958497346",
+  appId: "1:381958497346:web:58b5221ebd3332b60639db"
 };
 
 // Initialize Firebase

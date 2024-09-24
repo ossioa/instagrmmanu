@@ -20,7 +20,7 @@ const Navbar = ({ onSearch }) => {
     <>
       <nav className={`flex justify-between gap-2 items-center px-4 py-2 bg-gray-100 sticky top-0 z-20 shadow sm:px-8 md:px-12 ${isOpen ? 'hidden md:flex' : 'flex'}`}>
         <div className=' flex items-center space-x-4 sm:space-x-8 md:space-x-12'>
-          <img src='https://toppng.com/uploads/preview/instagram-icon-logo-social-media-icon-png-and-vector-ico-115630611667i1r9uaklh.png' alt='logo' className='w-12 mr-0' />
+          <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/768px-Instagram_icon.png' alt='logo' className='w-12 mr-0' />
         </div>
         <div className='hidden md:flex justify-center flex-grow'>
           <Search onSearch={onSearch} />
@@ -35,13 +35,13 @@ const Navbar = ({ onSearch }) => {
           </button>
           <button
             onClick={() => setShowCreateGroup(true)}
-            className='bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex items-center gap-y-2'
+            className='bg-gray-400 hover:bg-gray-200 text-black font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex items-center gap-y-2'
           >
             <FaPlus className="mr-2" /> Create Group
           </button>
           <button
             onClick={() => setShowCreatePost(true)}
-            className='bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex flex-col items-center gap-y-2'
+            className='bg-gray-400 hover:bg-gray-200 text-black font-bold py-2 px-4 rounded transition duration-300 ease-in-out flex flex-col items-center gap-y-2'
           >
             Posted
           </button>

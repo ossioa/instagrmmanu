@@ -8,14 +8,15 @@ import { faUser, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Login = () => {
-    const [isLogin, setIsLogin] = useState(true);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [forgotPassword, setForgotPassword] = useState(false);
-    const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(true);  // Toggle between login and registration mode
+    const [email, setEmail] = useState('');  // Email input state
+    const [password, setPassword] = useState('');  // Password input state
+    const [showPassword, setShowPassword] = useState(false);  // Toggle password visibility
+    const [forgotPassword, setForgotPassword] = useState(false);  // Toggle forgot password mode
+    const [message, setMessage] = useState('');  // Display success or error messages
+    const navigate = useNavigate();  // Navigation after login or sign up
 
+    // Handle login or registration
     const handleAuth = async (event) => {
         event.preventDefault();
         try {
@@ -23,25 +24,27 @@ const Login = () => {
                 ? await signInWithEmailAndPassword(auth, email, password)
                 : await createUserWithEmailAndPassword(auth, email, password);
             console.log(`${isLogin ? 'Logged in' : 'Signed up'} Successfully:`, userCredential.user);
-            navigate('/');
+            navigate('/');  // Redirect after successful login/signup
         } catch (error) {
             console.error(`${isLogin ? 'Error Logging in' : 'Error Signing up'}:`, error);
             setMessage(`${isLogin ? 'Error Logging in' : 'Error Signing up'}: ${error.message}`);
         }
     };
 
+    // Handle Google Sign-In
     const googleSignIn = async () => {
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
             console.log('Google Sign-In Success', result.user);
-            navigate('/');
+            navigate('/');  // Redirect after successful Google sign-in
         } catch (error) {
             console.error('Google Sign-In Error', error);
             setMessage('Google Sign-In Error: ' + error.message);
         }
     };
 
+    // Handle password reset
     const handlePasswordReset = async (event) => {
         event.preventDefault();
         try {
@@ -59,7 +62,7 @@ const Login = () => {
                 <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
                     {forgotPassword ? (
                         <>
-                            <AiOutlineKey className="mr-2"/> Reset Password
+                            <AiOutlineKey className="mr-2" /> Reset Password
                         </>
                     ) : isLogin ? (
                         <>

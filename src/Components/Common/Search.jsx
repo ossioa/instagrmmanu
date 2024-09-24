@@ -3,19 +3,17 @@ import React, { useState } from 'react';
 const Search = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
+  const handleSearchChange = ({ target: { value } }) => {
     setSearchTerm(value);
     onSearch(value);
   };
 
   return (
     <div className="flex items-center justify-center relative">
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={(e) => e.preventDefault()} className="relative">
         <input
-          className="border-2 border-cyan-200 bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none"
+          className="border-2 border-black bg-white h-10 px-5 pr-10 rounded-lg text-sm focus:outline-none"
           type="search"
-          name="search"
           placeholder="Search"
           value={searchTerm}
           onChange={handleSearchChange}
@@ -24,13 +22,7 @@ const Search = ({ onSearch }) => {
           <svg
             className="text-gray-600 h-4 w-4 fill-current"
             xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            version="1.1"
-            id="Capa_1"
-            x="0px"
-            y="0px"
             viewBox="0 0 56.966 56.966"
-            style={{ enableBackground: 'new 0 0 56.966 56.966' }}
             xmlSpace="preserve"
             width="512px"
             height="512px"

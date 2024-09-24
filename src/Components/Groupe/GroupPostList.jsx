@@ -8,6 +8,7 @@ const GroupPostList = ({ searchTerm, groupId }) => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
+  // Récupération des posts du groupe depuis Firestore
   useEffect(() => {
     if (!groupId) {
       console.error('groupId is undefined');
@@ -25,13 +26,17 @@ const GroupPostList = ({ searchTerm, groupId }) => {
           reactions: data.reactions || {}
         };
       });
+
+      // Trie des posts par timestamp (du plus récent au plus ancien)
       setPosts(postsData.sort((a, b) => b.timestamp - a.timestamp));
-      setFilteredPosts(postsData);
+      setFilteredPosts(postsData); // Initialisation du filtre
     });
 
+    // Nettoyage de l'écouteur Firestore
     return () => unsubscribe();
   }, [groupId]);
 
+  // Filtrer les posts en fonction du terme de recherche
   useEffect(() => {
     if (searchTerm) {
       const lowercasedFilter = searchTerm.toLowerCase();
@@ -44,6 +49,7 @@ const GroupPostList = ({ searchTerm, groupId }) => {
     }
   }, [searchTerm, posts]);
 
+  // Suppression d'un post
   const handleDelete = async (postId) => {
     if (!groupId || !postId) {
       console.error('groupId or postId is undefined');
